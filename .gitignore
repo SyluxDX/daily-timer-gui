@@ -3,5 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Vscode
+.vscode/
+
 # statistics files
 *_stats.csv
+
+# ignore user configuration files, but keep comfiguration template
+*.json
+!team.json

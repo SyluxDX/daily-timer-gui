@@ -1,23 +1,49 @@
 """ daily timer graphical interface """
 import tkinter as tk
 import tkinter.font as tkFont
+import src.interfaces as interfaces
+from dataclasses import dataclass
 
-class colors:
-    black = "#000000"
-    yellow = "#f2dc4e"
-    red = "#eb4034"
-    green = "#2cc743"
+@dataclass
+class Colors(interfaces.ColorsInterface):
+    """ colors definition """
+    def __init__(self, mode):
+        if mode == "dark":
+            self.window_background = "#1e1e1e"  # dark grey
+            self.text_background = "#252526"    # light grey
+            # self.button_background = "#e9e9ed"  # grey
+            self.button_background = "#333333"    # light grey
+            self.button_foreground = "#ffffff"  # black
+            # self.button_foreground = "#000000"  # black
+            self.normal = "#ffffff"             # white
+            self.pause = "#2cc743"              # green
+            self.warning = "#f2dc4e"            # yellow
+            self.overtime = "#eb4034"           # red
+        else:
+            self.window_background = "#f0f0f0"  # light grey
+            self.text_background = "#ffffff"    # white
+            self.button_background = "#e9e9ed"  # grey
+            self.button_foreground = "#000000"  # black
+            self.normal = "#000000"             # black
+            self.pause = "#2cc743"              # green
+            self.warning = "#f2dc4e"            # yellow
+            self.overtime = "#eb4034"           # red
 
-class interface:
+class interface(interfaces.UiInterface):
     timer = 0
 
-    def __init__(self) -> None:
+    def __init__(self, theme_mode:str, core: interfaces.CoreInterface, start_time: int) -> None:
         self.window = tk.Tk()
+        self.colors = Colors(theme_mode)
+        self.core = core
+        # update core ui object
+        self.core.ui = self
+        self.core.running_color = self.colors.normal
 
         # window
         self.window.title("Daily Timer")
         self.window.configure(
-            background = "#F0F0F0",
+            background = self.colors.window_background,
             width = 300,
             height = 350,
         )
@@ -32,15 +58,18 @@ class interface:
         self.label_timer = tk.Label(
             self.window,
             font = tkFont.Font(family='Helvetica', weight="bold",size=70),
-            text = "00:00",
-            background = "#f0f0f0",
+            # text = "00:00",
+            text = f"{start_time//60:02d}:{start_time%60:02d}",
+            background = self.colors.window_background,
+            foreground= self.colors.pause,
         )
         self.label_timer.place(x=0,y=0,width=300,height=100)
 
         # message
         self.text_users = tk.Message(
             self.window,
-            background = "#ffffff",
+            background = self.colors.text_background,
+            foreground= self.colors.normal,
             font = tkFont.Font(family='Helvetica',size=12),
         )
         self.text_users.place(x=10,y=100,width=280,height=200)
@@ -53,53 +82,69 @@ class interface:
 
         button_toggle=tk.Button(
             self.window,
-            background = "#e9e9ed",
+            background = self.colors.button_background,
+            foreground = self.colors.button_foreground,
+            highlightthickness = 0,
             font = buttons_font,
             text = "Start/Pause",
-            command = self.button_toggle_command,
+            # command = self.button_toggle_command,
+            command = self.core.toogle_timer,
         )
         button_toggle.place(x=20,y=310,width=80,height=30)
 
         button_next=tk.Button(
             self.window,
-            background = "#e9e9ed",
+            background = self.colors.button_background,
+            foreground= self.colors.button_foreground,
+            highlightthickness = 0,
             font = buttons_font,
             text = "Next",
-            command = lambda: self.button_next_command(self.timer),
+            # command = lambda: self.button_next_command(self.timer),
+            command = self.core.next_user,
         )
         button_next.place(x=120,y=310,width=70,height=30)
 
         button_previous=tk.Button(
             self.window,
-            background = "#e9e9ed",
+            background = self.colors.button_background,
+            foreground= self.colors.button_foreground,
+            highlightthickness = 0,
+            state="normal",
             font = buttons_font,
             text = "Previous",
-            command = self.button_previous_command,
+            # command = self.button_previous_command,
+            command = self.core.previous_user
         )
         button_previous.place(x=210,y=310,width=70,height=30)
 
-    def update_timer(self, seconds: int, color: colors = None) -> None:
+    def update_timer(self, seconds: int, color: str = "") -> None:
         if color:
             self.label_timer["foreground"] = color
         self.label_timer["text"] = f"{seconds//60:02d}:{seconds%60:02d}"
+    
+    def update_timer_color(self, color: str) -> None:
+        self.label_timer["foreground"] = color
+
+    def update_users(self, users: str):
+        return super().update_users(users)
 
     ############### debug functions ###############
     def button_toggle_command(self):
         # black
         self.timer += 1
-        if self.label_timer["fg"] == colors.black:
-            self.update_timer(self.timer, colors.green)
+        if self.label_timer["fg"] == self.colors.normal:
+            self.update_timer(self.timer, self.colors.pause)
         else:
-            self.update_timer(self.timer, colors.black)
+            self.update_timer(self.timer, self.colors.normal)
         print("button_toggle_command")
     def button_next_command(self, timer_value):
         # yellow
         # self.timer += 5
-        self.update_timer(timer_value, colors.yellow)
+        self.update_timer(timer_value, self.colors.warning)
         print("button_next_command")
     def button_previous_command(self):
         # red
         self.timer += 10
-        self.update_timer(self.timer, colors.red)
+        self.update_timer(self.timer, self.colors.overtime)
         print("button_previous_command")
     ###############################################
