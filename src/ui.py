@@ -126,24 +126,3 @@ class interface(interfaces.UiInterface):
     def update_users(self, users: list):
         ## TODO: add scroll logic
         self.text_users["text"] = "\n".join(users)
-
-    ############### debug functions ###############
-    def button_toggle_command(self):
-        # black
-        self.timer += 1
-        if self.label_timer["fg"] == self.colors.normal:
-            self.update_timer(self.timer, self.colors.pause)
-        else:
-            self.update_timer(self.timer, self.colors.normal)
-        print("button_toggle_command")
-    def button_next_command(self, timer_value):
-        # yellow
-        # self.timer += 5
-        self.update_timer(timer_value, self.colors.warning)
-        print("button_next_command")
-    def button_previous_command(self):
-        # red
-        self.timer += 10
-        self.update_timer(self.timer, self.colors.overtime)
-        print("button_previous_command")
-    ###############################################
