@@ -71,11 +71,9 @@ class interface(interfaces.UiInterface):
             background = self.colors.text_background,
             foreground= self.colors.normal,
             font = tkFont.Font(family='Helvetica',size=12),
+            anchor="w",
         )
         self.text_users.place(x=10,y=100,width=280,height=200)
-
-        lines = [f"user {x} 00:00" for x in range(10)]
-        self.text_users["text"] = "\n".join(lines)
 
         # buttons
         buttons_font = tkFont.Font(family='Helvetica',size=9)
@@ -125,8 +123,9 @@ class interface(interfaces.UiInterface):
     def update_timer_color(self, color: str) -> None:
         self.label_timer["foreground"] = color
 
-    def update_users(self, users: str):
-        return super().update_users(users)
+    def update_users(self, users: list):
+        ## TODO: add scroll logic
+        self.text_users["text"] = "\n".join(users)
 
     ############### debug functions ###############
     def button_toggle_command(self):

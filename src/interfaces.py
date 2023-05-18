@@ -11,11 +11,11 @@ class ColorsInterface:
 class UiInterface:
     """ UI Interface """
     colors = ColorsInterface()
-    def update_timer(self, timer:int):
+    def update_timer(self, timer: int):
         """ template for function update timer value """
     def update_timer_color(self, color: str):
         """ template for function update timer color """
-    def update_users(self, users: str):
+    def update_users(self, users: list):
         """ template for function update users """
 
 class CoreInterface:
