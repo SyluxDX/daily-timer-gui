@@ -115,6 +115,26 @@ class Interface(interfaces.UiInterface):
         )
         button_previous.place(x=210,y=310,width=70,height=30)
 
+        # Menu bar
+        menubar = tk.Menu(self.window)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Open", command=self.do_nothing)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.window.quit)
+
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="About", command=self.do_nothing)
+
+        menubar.add_cascade(label="File", menu=filemenu)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+
+        # asdasd
+        self.window.config(menu=menubar)
+
+    def do_nothing(self):
+        """ do nothing """
+        pass
+
     def update_timer(self, seconds: int, color: str = "") -> None:
         """ Updates Timer label value and color """
         if color:
