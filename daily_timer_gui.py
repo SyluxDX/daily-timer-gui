@@ -3,7 +3,7 @@ import argparse
 import threading
 
 from src import (
-    ui, 
+    ui,
     configurations,
     interfaces,
     core,
@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
         timer_core = core.Core(config, interfaces.UiInterface())
         start_time = 0 if config.stopwatch else config.time
-        ui_root = ui.interface(config.theme, timer_core, start_time)
+        ui_root = ui.Interface(config.theme, timer_core, start_time)
 
         # start timer thread
         run_thread = threading.Thread(target=timer_core.mainloop)#, args=(1.0,))
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
         # start ui blocking
         ui_root.window.mainloop()
-        
+
         # set thread flag to false and wait
         timer_core.loop_run = False
         run_thread.join()

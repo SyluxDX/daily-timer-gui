@@ -1,10 +1,10 @@
 """ Core class for timer """
-import src.interfaces
 
 from time import sleep
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 
+import src.interfaces
 from src.configurations import Configurations
 
 @dataclass
@@ -21,7 +21,7 @@ class UserTimer:
         ## find max lenght of names
         for name in users_list:
             max_name = max(max_name, len(name))
-        
+
         # Create usertimer with trailing whitespaces as padding
         self.users = [
             _usertimer( user+" "*(max_name-len(user) ), 0) for user in users_list
@@ -80,6 +80,8 @@ class Core(src.interfaces.CoreInterface):
     def __init__(self, configs: Configurations, ui:src.interfaces.UiInterface) -> None:
         self.ui = ui
         self.configs = configs
+        self.running_color = ui.colors.normal
+
         user_stats = {}
         self.users = UserTimer(configs.participants, user_stats)
 
@@ -94,7 +96,7 @@ class Core(src.interfaces.CoreInterface):
         if self.running_color != new_color:
             self.running_color = new_color
             self.ui.update_timer_color(self.running_color)
-        
+
         self.ui.update_users(self.users.str_list())
         # reset next tick
         self.next_tick = datetime.utcnow() + self.aux_tick
@@ -122,13 +124,13 @@ class Core(src.interfaces.CoreInterface):
             self.next_tick = datetime.utcnow() + self.aux_tick
         else:
             self.ui.update_timer_color(self.ui.colors.pause)
-    
+
     def update_timer(self, value):
         """ Calculate display timer based on function mode """
         if not self.configs.stopwatch:
             value = abs(self.configs.time - value)
         self.ui.update_timer(value)
-    
+
     def compute_color(self) -> str:
         """ Returns new timer color based on the timer value (seconds) """
         color = self.ui.colors.normal
@@ -140,6 +142,7 @@ class Core(src.interfaces.CoreInterface):
         return color
 
     def mainloop(self, ticks: float=0.25) -> None:
+        """ Timer main loop """
 
         self.update_timer(self.timer)
         ## set users list

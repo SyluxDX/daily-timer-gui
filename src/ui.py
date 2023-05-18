@@ -1,8 +1,9 @@
 """ daily timer graphical interface """
 import tkinter as tk
 import tkinter.font as tkFont
-import src.interfaces as interfaces
 from dataclasses import dataclass
+
+import src.interfaces as interfaces
 
 @dataclass
 class Colors(interfaces.ColorsInterface):
@@ -27,7 +28,8 @@ class Colors(interfaces.ColorsInterface):
             self.warning = "#f2dc4e"            # yellow
             self.overtime = "#eb4034"           # red
 
-class interface(interfaces.UiInterface):
+class Interface(interfaces.UiInterface):
+    """ Tkinter interface """
     timer = 0
 
     def __init__(self, theme_mode:str, core: interfaces.CoreInterface, start_time: int) -> None:
@@ -114,13 +116,16 @@ class interface(interfaces.UiInterface):
         button_previous.place(x=210,y=310,width=70,height=30)
 
     def update_timer(self, seconds: int, color: str = "") -> None:
+        """ Updates Timer label value and color """
         if color:
             self.label_timer["foreground"] = color
         self.label_timer["text"] = f"{seconds//60:02d}:{seconds%60:02d}"
-    
+
     def update_timer_color(self, color: str) -> None:
+        """ Updates Timer color """
         self.label_timer["foreground"] = color
 
     def update_users(self, users: list):
+        """ Update user list texts """
         ## TODO: add scroll logic
         self.text_users["text"] = "\n".join(users)

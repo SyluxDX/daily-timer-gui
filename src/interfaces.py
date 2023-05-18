@@ -6,7 +6,7 @@ class ColorsInterface:
     normal = ""
     pause = ""
     warning = ""
-    overtime = ""   
+    overtime = ""
 
 class UiInterface:
     """ UI Interface """
