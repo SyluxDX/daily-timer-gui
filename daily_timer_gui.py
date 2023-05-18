@@ -19,15 +19,18 @@ if __name__ == "__main__":
     try:
         config = configurations.Configurations(ARGS.config)
         stat_filename = f"{ARGS.config[:-5]}_stats.csv"
-        ### TODO
+
         timer_core = core.Core(config, interfaces.UiInterface())
         start_time = 0 if config.stopwatch else config.time
         ui_root = ui.interface(config.theme, timer_core, start_time)
+
         # start timer thread
         run_thread = threading.Thread(target=timer_core.mainloop)#, args=(1.0,))
         run_thread.start()
+
         # start ui blocking
         ui_root.window.mainloop()
+        
         # set thread flag to false and wait
         timer_core.loop_run = False
         run_thread.join()

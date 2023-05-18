@@ -11,10 +11,8 @@ class Colors(interfaces.ColorsInterface):
         if mode == "dark":
             self.window_background = "#1e1e1e"  # dark grey
             self.text_background = "#252526"    # light grey
-            # self.button_background = "#e9e9ed"  # grey
             self.button_background = "#333333"    # light grey
             self.button_foreground = "#ffffff"  # black
-            # self.button_foreground = "#000000"  # black
             self.normal = "#ffffff"             # white
             self.pause = "#2cc743"              # green
             self.warning = "#f2dc4e"            # yellow
