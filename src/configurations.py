@@ -8,6 +8,7 @@ class ConfigurationExeception(Exception):
 @dataclass
 class Configurations:
     """ General Configuration """
+    theme: str
     time: int
     warning: int
     participants: list
@@ -22,6 +23,7 @@ class Configurations:
             with open(filename, "r", encoding="utf8") as cfp:
                 raw_config = json.load(cfp)
             # Update class fields
+            self.theme = raw_config["theme"]
             self.time = raw_config["time"]
             self.warning = raw_config["warning"]
             self.participants = raw_config["participants"]

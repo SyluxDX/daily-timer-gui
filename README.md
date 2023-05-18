@@ -7,7 +7,8 @@ For a terminal based version check the sister project [Daily Timer](https://gith
 # Configurations
 | Name              | Type        | Description                                                     |
 |-------------------|-------------|-----------------------------------------------------------------|
-| time              | int         | limit of seconds after which enter in overtime                  |
+| theme             | str         | UI theme selection, dark or light                               |
+| time              | int         | Limit of seconds after which enter in overtime                  |
 | warning           | int         | Number of seconds when an warning wil be displayed              |
 | participants      | list of str | List of team members                                            |
 | randomOrder       | bool        | Flag to randomize the participants list before each startup     |
