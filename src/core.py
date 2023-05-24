@@ -85,13 +85,13 @@ class Core(src.interfaces.CoreInterface):
         user_stats = {}
         self.users = UserTimer(configs.participants, user_stats)
 
-    def next_user(self, ) -> None:
+    def next_user(self) -> None:
         """ update current user and get seconds of the next user """
         self.users.set_current_timer(self.timer)
         self.timer = self.users.next_timer()
 
         ## set timer color and update timer
-        self.ui.update_timer(self.timer)
+        self.update_timer(self.timer)
         new_color = self.compute_color()
         if self.running_color != new_color:
             self.running_color = new_color
@@ -107,7 +107,7 @@ class Core(src.interfaces.CoreInterface):
         self.timer = self.users.previous_timer()
 
         ## set timer color and update timer
-        self.ui.update_timer(self.timer)
+        self.update_timer(self.timer)
         new_color = self.compute_color()
         if self.running_color != new_color:
             self.running_color = new_color
@@ -165,3 +165,14 @@ class Core(src.interfaces.CoreInterface):
 
             # self.ui.update_timer(self.timer)
             sleep(ticks)
+        
+        print("end loop")
+        self.users.set_current_timer(self.timer)
+        for user in self.users.users:
+            print(user.user, user.seconds)
+        # write stats
+
+# # update last active user timer
+# users.set_current_timer(seconds)
+# stats.write_daily_times(stats_path, users.get_list())
+# break
