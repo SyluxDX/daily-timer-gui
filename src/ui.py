@@ -65,7 +65,11 @@ class Interface(interfaces.UiInterface):
         )
         self.label_timer.place(x=0,y=0,width=300,height=100)
 
-        # message
+        # user list
+        self.number_users = 10
+        self.current_user = 0
+        self.start_scroll = 0
+        self.end_scroll = self.number_users - 1
         self.text_users = tk.Message(
             self.window,
             background = self.colors.text_background,
@@ -125,7 +129,37 @@ class Interface(interfaces.UiInterface):
         """ Updates Timer color """
         self.label_timer["foreground"] = color
 
-    def update_users(self, users: list):
+    def update_users(self, users: list, current: int):
         """ Update user list texts """
+        # number of lines fewer or equal than window size
+        if len(users) <= self.number_users:
+            self.text_users["text"] = "\n".join(users)
+        
+        # scroll window
+        direction = current - self.current_user
+        if direction > 0:
+            if abs(direction) == len(users) -1:
+                # jump from start to end
+                self.end_scroll = len(users) -1
+                self.start_scroll = self.end_scroll - (self.number_users -1)
+            elif current == self.end_scroll -1 and self.end_scroll+1 != len(users):
+                # near window right limit
+                self.start_scroll += 1
+                self.end_scroll += 1
+
+        if direction < 0:
+            if abs(direction) == len(users) -1:
+                # jump from end to start
+                self.start_scroll = 0
+                self.end_scroll = self.number_users -1
+            elif current == self.start_scroll +1 and self.start_scroll-1 != -1:
+                # near window left limit
+                self.start_scroll -= 1
+                self.end_scroll -= 1
+
+        # update users window
+        self.current_user = current
+        self.text_users["text"] = "\n".join(users[self.start_scroll:self.end_scroll+1])
+
         ## TODO: add scroll logic
         self.text_users["text"] = "\n".join(users)

@@ -15,7 +15,7 @@ class UiInterface:
         """ template for function update timer value """
     def update_timer_color(self, color: str):
         """ template for function update timer color """
-    def update_users(self, users: list):
+    def update_users(self, users: list, current: int):
         """ template for function update users """
 
 class CoreInterface:

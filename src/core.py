@@ -97,7 +97,7 @@ class Core(src.interfaces.CoreInterface):
             self.running_color = new_color
             self.ui.update_timer_color(self.running_color)
 
-        self.ui.update_users(self.users.str_list())
+        self.ui.update_users(self.users.str_list(), self.users.current)
         # reset next tick
         self.next_tick = datetime.utcnow() + self.aux_tick
 
@@ -112,7 +112,7 @@ class Core(src.interfaces.CoreInterface):
         if self.running_color != new_color:
             self.running_color = new_color
             self.ui.update_timer_color(self.running_color)
-        self.ui.update_users(self.users.str_list())
+        self.ui.update_users(self.users.str_list(), self.users.current)
         # reset next tick
         self.next_tick = datetime.utcnow() + self.aux_tick
 
@@ -146,7 +146,7 @@ class Core(src.interfaces.CoreInterface):
 
         self.update_timer(self.timer)
         ## set users list
-        self.ui.update_users(self.users.str_list())
+        self.ui.update_users(self.users.str_list(), self.users.current)
 
         while self.loop_run:
             if self.timer_running:
