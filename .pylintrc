@@ -1,0 +1,5 @@
+[DESIGN]
+# Maximum number of attributes for a class (see R0902), default 7.
+max-attributes=9
+# Maximum number of locals for function / method body, default 15
+max-locals=16

@@ -4,7 +4,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 from dataclasses import dataclass
 
-import src.interfaces as interfaces
+from src import interfaces
 
 @dataclass
 class Colors(interfaces.ColorsInterface):
@@ -38,7 +38,7 @@ class Interface(interfaces.UiInterface):
         self.colors = Colors(theme_mode)
         self.core = core
         # update core ui object
-        self.core.ui = self
+        self.core.gui = self
         self.core.running_color = self.colors.normal
 
         # window
@@ -135,7 +135,7 @@ class Interface(interfaces.UiInterface):
         # number of lines fewer or equal than window size
         if len(users) <= self.number_users:
             self.text_users["text"] = "\n".join(users)
-        
+
         # scroll window
         direction = current - self.current_user
         if direction > 0:

@@ -62,8 +62,10 @@ class UserTimer:
             prefix = "  "
             if i == self.current:
                 prefix = "->"
-            sline = f"        {self.stats[user.user.strip()]}".rstrip()
-            text.append(f"{prefix} {user.user} {user.seconds//60:02d}:{user.seconds%60:02d}\n{sline}")
+            sline = f"      {self.stats[user.user.strip()]}"
+            text.append(
+                f"{prefix} {user.user} {user.seconds//60:02d}:{user.seconds%60:02d}\n{sline}"
+            )
         return text
 
     def get_list(self) -> list:
@@ -79,12 +81,12 @@ class Core(src.interfaces.CoreInterface):
     next_tick = None
 
     def __init__(
-            self, configs: Configurations, ui:src.interfaces.UiInterface, stat_filename: str
+            self, configs: Configurations, gui:src.interfaces.UiInterface, stat_filename: str
     ) -> None:
         self.configs = configs
-        self.ui = ui
+        self.gui = gui
         self.stat_filename = stat_filename
-        self.running_color = ui.colors.normal
+        self.running_color = gui.colors.normal
 
         user_stats = {}
         if self.configs.stats_display:
@@ -103,9 +105,9 @@ class Core(src.interfaces.CoreInterface):
         new_color = self.compute_color()
         if self.running_color != new_color:
             self.running_color = new_color
-            self.ui.update_timer_color(self.running_color)
+            self.gui.update_timer_color(self.running_color)
 
-        self.ui.update_users(self.users.str_list(), self.users.current)
+        self.gui.update_users(self.users.str_list(), self.users.current)
         # reset next tick
         self.next_tick = datetime.utcnow() + self.aux_tick
 
@@ -119,8 +121,8 @@ class Core(src.interfaces.CoreInterface):
         new_color = self.compute_color()
         if self.running_color != new_color:
             self.running_color = new_color
-            self.ui.update_timer_color(self.running_color)
-        self.ui.update_users(self.users.str_list(), self.users.current)
+            self.gui.update_timer_color(self.running_color)
+        self.gui.update_users(self.users.str_list(), self.users.current)
         # reset next tick
         self.next_tick = datetime.utcnow() + self.aux_tick
 
@@ -128,24 +130,24 @@ class Core(src.interfaces.CoreInterface):
         """ toogle start/pause for timer """
         self.timer_running = not self.timer_running
         if self.timer_running:
-            self.ui.update_timer_color(self.running_color)
+            self.gui.update_timer_color(self.running_color)
             self.next_tick = datetime.utcnow() + self.aux_tick
         else:
-            self.ui.update_timer_color(self.ui.colors.pause)
+            self.gui.update_timer_color(self.gui.colors.pause)
 
     def update_timer(self, value):
         """ Calculate display timer based on function mode """
         if not self.configs.stopwatch:
             value = abs(self.configs.time - value)
-        self.ui.update_timer(value)
+        self.gui.update_timer(value)
 
     def compute_color(self) -> str:
         """ Returns new timer color based on the timer value (seconds) """
-        color = self.ui.colors.normal
+        color = self.gui.colors.normal
         if self.timer >= self.configs.warning:
-            color = self.ui.colors.warning
+            color = self.gui.colors.warning
         if self.timer >= self.configs.time:
-            color = self.ui.colors.overtime
+            color = self.gui.colors.overtime
 
         return color
 
@@ -154,7 +156,7 @@ class Core(src.interfaces.CoreInterface):
 
         self.update_timer(self.timer)
         ## set users list
-        self.ui.update_users(self.users.str_list(), self.users.current)
+        self.gui.update_users(self.users.str_list(), self.users.current)
 
         while self.loop_run:
             if self.timer_running:
@@ -167,13 +169,13 @@ class Core(src.interfaces.CoreInterface):
                     new_color = self.compute_color()
                     if self.running_color != new_color:
                         self.running_color = new_color
-                        self.ui.update_timer_color(self.running_color)
+                        self.gui.update_timer_color(self.running_color)
                     self.next_tick += self.aux_tick
                     self.update_timer(self.timer)
 
             # self.ui.update_timer(self.timer)
             sleep(ticks)
-        
+
         # update last active user timer before writing stats
         self.users.set_current_timer(self.timer)
         src.team_statistics.write_daily_times(self.stat_filename, self.users.get_list())

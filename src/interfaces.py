@@ -1,5 +1,7 @@
 """ interfaces to prevent circular module import """
+import dataclasses
 
+@dataclasses.dataclass
 class ColorsInterface:
     """ colors definition """
     normal = ""
@@ -10,7 +12,7 @@ class ColorsInterface:
 class UiInterface:
     """ UI Interface """
     colors = ColorsInterface()
-    def update_timer(self, timer: int):
+    def update_timer(self, seconds: int, color: str=""):
         """ template for function update timer value """
     def update_timer_color(self, color: str):
         """ template for function update timer color """
@@ -19,7 +21,7 @@ class UiInterface:
 
 class CoreInterface:
     """ Core Interface """
-    ui: UiInterface
+    gui: UiInterface
     running_color: str
     def next_user(self):
         """ template for function next user """
