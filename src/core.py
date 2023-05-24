@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from dataclasses import dataclass
 
 import src.interfaces
+import src.team_statistics
 from src.configurations import Configurations
 
 @dataclass
@@ -61,8 +62,8 @@ class UserTimer:
             prefix = "  "
             if i == self.current:
                 prefix = "->"
-            sline = f"        {self.stats[user.user.strip()]}"
-            text.append(f"{prefix} {user.user} {user.seconds//60:02d}:{user.seconds%60:02d}{sline}")
+            sline = f"        {self.stats[user.user.strip()]}".rstrip()
+            text.append(f"{prefix} {user.user} {user.seconds//60:02d}:{user.seconds%60:02d}\n{sline}")
         return text
 
     def get_list(self) -> list:
@@ -77,12 +78,19 @@ class Core(src.interfaces.CoreInterface):
     aux_tick = timedelta(seconds=1)
     next_tick = None
 
-    def __init__(self, configs: Configurations, ui:src.interfaces.UiInterface) -> None:
-        self.ui = ui
+    def __init__(
+            self, configs: Configurations, ui:src.interfaces.UiInterface, stat_filename: str
+    ) -> None:
         self.configs = configs
+        self.ui = ui
+        self.stat_filename = stat_filename
         self.running_color = ui.colors.normal
 
         user_stats = {}
+        if self.configs.stats_display:
+            user_stats = src.team_statistics.read_last_dailies(
+                self.stat_filename, self.configs.stats_number
+            )
         self.users = UserTimer(configs.participants, user_stats)
 
     def next_user(self) -> None:
@@ -166,13 +174,9 @@ class Core(src.interfaces.CoreInterface):
             # self.ui.update_timer(self.timer)
             sleep(ticks)
         
-        print("end loop")
+        # update last active user timer before writing stats
         self.users.set_current_timer(self.timer)
+        src.team_statistics.write_daily_times(self.stat_filename, self.users.get_list())
         for user in self.users.users:
             print(user.user, user.seconds)
         # write stats
-
-# # update last active user timer
-# users.set_current_timer(seconds)
-# stats.write_daily_times(stats_path, users.get_list())
-# break

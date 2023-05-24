@@ -1,4 +1,5 @@
 """ daily timer graphical interface """
+
 import tkinter as tk
 import tkinter.font as tkFont
 from dataclasses import dataclass
@@ -66,7 +67,7 @@ class Interface(interfaces.UiInterface):
         self.label_timer.place(x=0,y=0,width=300,height=100)
 
         # user list
-        self.number_users = 10
+        self.number_users = 5
         self.current_user = 0
         self.start_scroll = 0
         self.end_scroll = self.number_users - 1
@@ -160,6 +161,3 @@ class Interface(interfaces.UiInterface):
         # update users window
         self.current_user = current
         self.text_users["text"] = "\n".join(users[self.start_scroll:self.end_scroll+1])
-
-        ## TODO: add scroll logic
-        self.text_users["text"] = "\n".join(users)

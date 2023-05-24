@@ -1,6 +1,5 @@
 """ interfaces to prevent circular module import """
 
-
 class ColorsInterface:
     """ colors definition """
     normal = ""

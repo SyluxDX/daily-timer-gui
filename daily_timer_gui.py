@@ -20,7 +20,7 @@ if __name__ == "__main__":
         config = configurations.Configurations(ARGS.config)
         stat_filename = f"{ARGS.config[:-5]}_stats.csv"
 
-        timer_core = core.Core(config, interfaces.UiInterface())
+        timer_core = core.Core(config, interfaces.UiInterface(), stat_filename)
         start_time = 0 if config.stopwatch else config.time
         ui_root = ui.Interface(config.theme, timer_core, start_time)
 
@@ -34,6 +34,7 @@ if __name__ == "__main__":
         # set thread flag to false and wait
         timer_core.loop_run = False
         run_thread.join()
+        print("exit")
     except configurations.ConfigurationExeception as error:
         print(error, end="\n\n")
         input("Press Enter to exit")

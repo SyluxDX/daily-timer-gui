@@ -1,4 +1,5 @@
 """ Dailty Timer configurations class loader """
+
 import json
 from dataclasses import dataclass
 
