@@ -43,10 +43,16 @@ class Interface(interfaces.UiInterface):
 
         # window
         self.window.title("Daily Timer")
+        # self.window.configure(
+        #     background = self.colors.window_background,
+        #     width = 300,
+        #     height = 350,
+        # )
+        # larger: more 200
         self.window.configure(
             background = self.colors.window_background,
             width = 300,
-            height = 350,
+            height = 550,
         )
         self.window.resizable(False, False)
         self.window.geometry((
@@ -58,7 +64,7 @@ class Interface(interfaces.UiInterface):
         # timer
         self.label_timer = tk.Label(
             self.window,
-            font = tkFont.Font(family='Helvetica', weight="bold",size=70),
+            font = tkFont.Font(family="Helvetica", weight="bold",size=70),
             # text = "00:00",
             text = f"{start_time//60:02d}:{start_time%60:02d}",
             background = self.colors.window_background,
@@ -67,7 +73,9 @@ class Interface(interfaces.UiInterface):
         self.label_timer.place(x=0,y=0,width=300,height=100)
 
         # user list
-        self.number_users = 5
+        # self.number_users = 5
+        # larger: more lines
+        self.number_users = 10
         self.current_user = 0
         self.start_scroll = 0
         self.end_scroll = self.number_users - 1
@@ -75,13 +83,15 @@ class Interface(interfaces.UiInterface):
             self.window,
             background = self.colors.text_background,
             foreground= self.colors.normal,
-            font = tkFont.Font(family='Helvetica',size=12),
+            font = tkFont.Font(family="Courier",size=12),
             anchor="w",
         )
-        self.text_users.place(x=10,y=100,width=280,height=200)
+        # self.text_users.place(x=10,y=100,width=280,height=200)
+        # larger: more 200
+        self.text_users.place(x=10,y=100,width=280,height=400)
 
         # buttons
-        buttons_font = tkFont.Font(family='Helvetica',size=9)
+        buttons_font = tkFont.Font(family="Helvetica",size=9)
 
         button_toggle=tk.Button(
             self.window,
@@ -93,7 +103,9 @@ class Interface(interfaces.UiInterface):
             # command = self.button_toggle_command,
             command = self.core.toogle_timer,
         )
-        button_toggle.place(x=20,y=310,width=80,height=30)
+        # button_toggle.place(x=20,y=310,width=80,height=30)
+        # larger: more 200
+        button_toggle.place(x=20,y=510,width=80,height=30)
 
         button_next=tk.Button(
             self.window,
@@ -105,7 +117,9 @@ class Interface(interfaces.UiInterface):
             # command = lambda: self.button_next_command(self.timer),
             command = self.core.next_user,
         )
-        button_next.place(x=120,y=310,width=70,height=30)
+        # button_next.place(x=120,y=310,width=70,height=30)
+        # larger: more 200
+        button_next.place(x=120,y=510,width=70,height=30)
 
         button_previous=tk.Button(
             self.window,
@@ -118,7 +132,9 @@ class Interface(interfaces.UiInterface):
             # command = self.button_previous_command,
             command = self.core.previous_user
         )
-        button_previous.place(x=210,y=310,width=70,height=30)
+        # button_previous.place(x=210,y=310,width=70,height=30)
+        # larger: more 200
+        button_previous.place(x=210,y=510,width=70,height=30)
 
     def update_timer(self, seconds: int, color: str = "") -> None:
         """ Updates Timer label value and color """
@@ -132,7 +148,7 @@ class Interface(interfaces.UiInterface):
 
     def update_users(self, users: list, current: int):
         """ Update user list texts """
-        # number of lines fewer or equal than window size
+        # number of lines fewer or equal than window size.
         if len(users) <= self.number_users:
             self.text_users["text"] = "\n".join(users)
 
