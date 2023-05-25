@@ -34,7 +34,6 @@ if __name__ == "__main__":
         # set thread flag to false and wait
         timer_core.loop_run = False
         run_thread.join()
-        print("exit")
     except configurations.ConfigurationExeception as error:
         print(error, end="\n\n")
         input("Press Enter to exit")

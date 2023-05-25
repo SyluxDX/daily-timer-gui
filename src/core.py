@@ -179,6 +179,3 @@ class Core(src.interfaces.CoreInterface):
         # update last active user timer before writing stats
         self.users.set_current_timer(self.timer)
         src.team_statistics.write_daily_times(self.stat_filename, self.users.get_list())
-        for user in self.users.users:
-            print(user.user, user.seconds)
-        # write stats
