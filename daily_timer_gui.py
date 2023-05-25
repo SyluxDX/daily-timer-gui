@@ -3,7 +3,7 @@ import argparse
 import threading
 
 from src import (
-    ui,
+    gui,
     configurations,
     interfaces,
     core,
@@ -11,18 +11,16 @@ from src import (
 
 _parser = argparse.ArgumentParser(description='Timer for Daily Timer.')
 _parser.add_argument("-c", "--config", default="team.json", help='path for configuration')
-
 ARGS = _parser.parse_args()
 
 if __name__ == "__main__":
-
     try:
         config = configurations.Configurations(ARGS.config)
         stat_filename = f"{ARGS.config[:-5]}_stats.csv"
 
         timer_core = core.Core(config, interfaces.UiInterface(), stat_filename)
         start_time = 0 if config.stopwatch else config.time
-        ui_root = ui.Interface(config.theme, timer_core, start_time)
+        ui_root = gui.Interface(config.theme, timer_core, start_time)
 
         # start timer thread
         run_thread = threading.Thread(target=timer_core.mainloop)#, args=(1.0,))
