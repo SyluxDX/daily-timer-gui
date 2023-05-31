@@ -12,3 +12,8 @@ __pycache__/
 # ignore user configuration files, but keep comfiguration template
 *.json
 !team.json
+
+# pyinstaller
+build/
+dist/
+*.spec
