@@ -3,6 +3,7 @@
 from time import sleep
 from datetime import datetime, timedelta
 from dataclasses import dataclass
+from random import shuffle
 
 import src.interfaces
 import src.team_statistics
@@ -16,12 +17,15 @@ class _usertimer:
 
 class UserTimer:
     """ Dataclass for users timers """
-    def __init__(self, users_list: list, statistics: dict) -> None:
+    def __init__(self, users_list: list, statistics: dict, randomOrder: bool) -> None:
         # get max len of user name
         max_name = 0
         ## find max lenght of names
         for name in users_list:
             max_name = max(max_name, len(name))
+        ## set user in random order if desired
+        if randomOrder:
+            shuffle(users_list)
 
         # Create usertimer with trailing whitespaces as padding
         self.users = [
@@ -93,7 +97,7 @@ class Core(src.interfaces.CoreInterface):
             user_stats = src.team_statistics.read_last_dailies(
                 self.stat_filename, self.configs.stats_number
             )
-        self.users = UserTimer(configs.participants, user_stats)
+        self.users = UserTimer(configs.participants, user_stats, configs.random)
 
     def next_user(self) -> None:
         """ update current user and get seconds of the next user """
