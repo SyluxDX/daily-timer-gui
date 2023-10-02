@@ -41,14 +41,8 @@ class Interface(interfaces.UiInterface):
         self.core.gui = self
         self.core.running_color = self.colors.normal
 
-        # window
+        ### window
         self.window.title("Daily Timer")
-        # self.window.configure(
-        #     background = self.colors.window_background,
-        #     width = 300,
-        #     height = 350,
-        # )
-        # larger: more 200
         self.window.configure(
             background = self.colors.window_background,
             width = 300,
@@ -61,7 +55,7 @@ class Interface(interfaces.UiInterface):
             f"+{(self.window.winfo_screenheight() - self.window['height']) // 2}"
         ))
 
-        # timer
+        ### timer
         self.label_timer = tk.Label(
             self.window,
             font = tkFont.Font(family="Helvetica", weight="bold",size=70),
@@ -72,9 +66,7 @@ class Interface(interfaces.UiInterface):
         )
         self.label_timer.place(x=0,y=0,width=300,height=100)
 
-        # user list
-        # self.number_users = 5
-        # larger: more lines
+        ### user list
         self.number_users = 10
         self.current_user = 0
         self.start_scroll = 0
@@ -86,11 +78,9 @@ class Interface(interfaces.UiInterface):
             font = tkFont.Font(family="Courier",size=12),
             anchor="w",
         )
-        # self.text_users.place(x=10,y=100,width=280,height=200)
-        # larger: more 200
         self.text_users.place(x=10,y=100,width=280,height=400)
 
-        # buttons
+        ### buttons
         buttons_font = tkFont.Font(family="Helvetica",size=9)
 
         button_toggle=tk.Button(
@@ -100,12 +90,8 @@ class Interface(interfaces.UiInterface):
             highlightthickness = 0,
             font = buttons_font,
             text = "Start/Pause",
-            # command = self.button_toggle_command,
             command = self.core.toogle_timer,
         )
-        # button_toggle.place(x=20,y=310,width=80,height=30)
-        # larger: more 200
-        button_toggle.place(x=20,y=510,width=80,height=30)
 
         button_next=tk.Button(
             self.window,
@@ -114,13 +100,9 @@ class Interface(interfaces.UiInterface):
             highlightthickness = 0,
             font = buttons_font,
             text = "Next",
-            # command = lambda: self.button_next_command(self.timer),
             command = self.core.next_user,
         )
-        # button_next.place(x=120,y=310,width=70,height=30)
-        # larger: more 200
-        button_next.place(x=120,y=510,width=70,height=30)
-
+        
         button_previous=tk.Button(
             self.window,
             background = self.colors.button_background,
@@ -129,12 +111,18 @@ class Interface(interfaces.UiInterface):
             state="normal",
             font = buttons_font,
             text = "Previous",
-            # command = self.button_previous_command,
             command = self.core.previous_user
         )
-        # button_previous.place(x=210,y=310,width=70,height=30)
-        # larger: more 200
-        button_previous.place(x=210,y=510,width=70,height=30)
+        
+        ## Button order
+        # button_toggle.place(x=20,y=510,width=80,height=30)
+        # button_next.place(x=120,y=510,width=70,height=30)
+        # button_previous.place(x=210,y=510,width=70,height=30)
+        ## reorder
+        button_previous.place(x=20,y=510,width=70,height=30)
+        button_toggle.place(x=110,y=510,width=80,height=30)
+        button_next.place(x=210,y=510,width=70,height=30)
+        
 
     def update_timer(self, seconds: int, color: str = "") -> None:
         """ Updates Timer label value and color """
